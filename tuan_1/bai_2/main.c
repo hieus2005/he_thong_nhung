@@ -1,33 +1,33 @@
-#include "stm32f10x.h"  /* Thư viện định nghĩa thanh ghi dòng STM32F10x */
-#include <stdint.h>     /* Thư viện chuẩn hỗ trợ các kiểu dữ liệu (uint16_t, int8_t...) */
+#include "stm32f10x.h"  /* Thu vien dinh nghia thanh ghi dong STM32F10x */
+#include <stdint.h>     /* Thu vien chuan ho tro cac kieu du lieu */
 
-void delay_ms(uint16_t t); /* Khai báo nguyên mẫu hàm tạo trễ thời gian */
+void delay_ms(uint16_t t); /* Khai bao nguyen mau ham tao tre thoi gian */
 
 int main() {
-    RCC->APB2ENR |= 0xFC;      /* Bật xung nhịp clock cho các cổng GPIO từ A đến F */
-    GPIOA->CRL = 0x33333333;   /* Cấu hình các chân từ PA0 đến PA7 làm ngõ ra (Output Push-Pull) */
+    RCC->APB2ENR |= 0xFC;      /* Bat xung nhip clock cho cac cong GPIO tu A den F */
+    GPIOA->CRL = 0x33333333;   /* Cau hinh cac chan tu PA0 den PA7 lam ngo ra (Output Push-Pull) */
 
     while(1) {
         int8_t n;
 
-        GPIOA->ODR = 0x00;     /* Tắt toàn bộ các LED (đưa mức 0) trước khi chạy hiệu ứng */
+        GPIOA->ODR = 0x00;     /* Tat toan bo cac LED truoc khi chay hieu ung */
 
-        for(n = 0; n <= 7; n++)   /* Vòng lặp chạy từ trái sang phải (PA0 đến PA7) */
+        for(n = 0; n <= 7; n++)   /* Vong lap chay từ trai sang phai (PA0 den PA7) */
         {
-            GPIOA->ODR = (1<<n);  /* Bật sáng LED tại chân PAn, các chân khác tắt */
-            delay_ms(500);        /* Trễ 500ms */
+            GPIOA->ODR = (1<<n);  /* Bat sang LED tai chan PAn, cac chan kha tat */
+            delay_ms(500);        /* Tre 500ms */
         }
 
-        for(n = 7; n >= 0; n--)   /* Vòng lặp chạy ngược từ phải về trái (PA7 về PA0) */
+        for(n = 7; n >= 0; n--)   /* Vong lap chay nguoc tu phai ve trai (PA7 ve PA0) */
         {
-            GPIOA->ODR = (1<<n);  /* Bật sáng LED tại chân PAn, các chân khác tắt */
-            delay_ms(500);        /* Trễ 500ms */
+            GPIOA->ODR = (1<<n);  /* Bat sang LED tai chan PAn, cac chan khac tat */
+            delay_ms(500);        /* Tre 500ms */
         }
     }
 }
 
 void delay_ms(uint16_t t) {
-    for (uint32_t i = 0; i < t * 800; i++) { /* Vòng lặp tạo độ trễ tính theo mili-giây */
-        __asm("nop");         /* Lệnh trống của Assembly để tiêu tốn chu kỳ máy */
+    for (uint32_t i = 0; i < t * 800; i++) { /* Vong lap tao do tre tinh theo mili-giay */
+        __asm("nop");         /* Lenh trong cua Assembly de tieu ton chu ky may */
     }
 }
